@@ -46,8 +46,8 @@ dependencies {
     // Spring Cloud
     //implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
 
-    // Kafka support
-//    implementation 'org.springframework.kafka:spring-kafka'
+//     Kafka support
+    implementation 'org.springframework.kafka:spring-kafka'
 
     // Lombok for reducing boilerplate
     implementation group: 'org.projectlombok', name:'lombok', version: "$lombokVersion"

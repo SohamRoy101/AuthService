@@ -2,7 +2,8 @@ package authservice.service;
 
 import authservice.entities.UserInfo;
 //import authservice.eventProducer.UserInfoEvent;
-//import authservice.eventProducer.UserInfoProducer;
+import authservice.eventProducer.UserInfoEvent;
+import authservice.eventProducer.UserInfoProducer;
 import authservice.model.UserInfoDto;
 import authservice.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -33,8 +34,8 @@ public class UserDetailsServiceImpl implements UserDetailsService
     @Autowired
     private final PasswordEncoder passwordEncoder;
 
-//    @Autowired
-//    private final UserInfoProducer userInfoProducer;
+    @Autowired
+    private final UserInfoProducer userInfoProducer;
 
 
     private static final Logger log = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
@@ -66,8 +67,8 @@ public class UserDetailsServiceImpl implements UserDetailsService
         UserInfo userInfo = new UserInfo(userId, userInfoDto.getUsername(), userInfoDto.getPassword(),
                 new HashSet<>());
         userRepository.save(userInfo);
-//        // pushEventToQueue
-//        userInfoProducer.sendEventToKafka(userInfoEventToPublish(userInfoDto, userId));
+        // pushEventToQueue
+         userInfoProducer.sendEventToKafka(userInfoEventToPublish(userInfoDto, userId));
         return true;
     }
 
@@ -75,13 +76,13 @@ public class UserDetailsServiceImpl implements UserDetailsService
 //        return Optional.of(userRepository.findByUsername(userName)).map(UserInfo::getUserId).orElse(null);
 //    }
 
-//    private UserInfoEvent userInfoEventToPublish(UserInfoDto userInfoDto, String userId){
-//        return UserInfoEvent.builder()
-//                .userId(userId)
-//                .firstName(userInfoDto.getUsername())
-//                .lastName(userInfoDto.getLastName())
-//                .email(userInfoDto.getEmail())
-//                .phoneNumber(userInfoDto.getPhoneNumber()).build();
-//
-//    }
+    private UserInfoEvent userInfoEventToPublish(UserInfoDto userInfoDto, String userId){
+        return UserInfoEvent.builder()
+                .userId(userId)
+                .firstName(userInfoDto.getUsername())
+                .lastName(userInfoDto.getLastName())
+                .email(userInfoDto.getEmail())
+                .phoneNumber(userInfoDto.getPhoneNumber()).build();
+
+    }
 }
